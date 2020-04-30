@@ -14,7 +14,7 @@ import codecs
 
 class RhasspyMQTTClient:
 
-    def __init__(self, host="", port=1883, username="", password="", recording=False, jsonfolder="", logger=None):
+    def __init__(self, host="", port=1883, username="", password="", tls=False, cacerts=None, recording=False, jsonfolder="", logger=None):
         """The __init__ function of custom MQTT Class.
         Args:
             host (str)               : MQTT Server name or IP.
@@ -22,6 +22,8 @@ class RhasspyMQTTClient:
             logger (class:logging.Logger): Logger object for logging messages.
             username (str)(option)   : User name to connect MQTT server.
             password (str)(option)   : Password to connect MQTT server.
+            tls (bool)               : Use TLS to connect to MQTT server.
+            cacerts (str)            : CA path to verify the MQTT server's TLS certificate, or None for the system's default CA system.
             recording (bool)          : save all messages as json file (and wave).
             jsonfolder (str)         : Folder where messages are saved
         """ 
@@ -30,6 +32,8 @@ class RhasspyMQTTClient:
         self.port       = port
         self.username   = username
         self.password   = password
+        self.tls        = tls
+        self.cacerts    = cacerts
         self.recording   = recording
         self.jsonfolder = jsonfolder
         self.logger     = logger
@@ -105,12 +109,15 @@ class RhasspyMQTTClient:
     def connect(self):
         """Connect to the MQTT broker defined in the configuration. """
 
-        self.logger.debug('enter in show_message method.')
+        self.logger.debug('enter in connect method.')
 
         if self.username != "":
             self.logger.debug('Setting username and password for MQTT broker.')
             self.__mqtt.username_pw_set(self.username, self.password)
 
+        if self.tls:
+            self.logger.debug('Setting TLS for MQTT broker.')
+            self.__mqtt.tls_set(ca_certs=self.cacerts)
 
         self.logger.info('Connecting to MQTT broker %s:%s...', str(self.host), str(self.port))
         
