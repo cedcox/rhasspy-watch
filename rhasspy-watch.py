@@ -103,6 +103,8 @@ parser.add_argument("--host",          help="host : MQTT hostname or IP",default
 parser.add_argument("--port",          help="port : MQTT server tcp port",default=1883)
 parser.add_argument("--username",      help="username : authentication on MQTT",default="")
 parser.add_argument("--password",      help="passwrd : authentication on MQTT",default="")
+parser.add_argument("--tls",           help="tls : use TLS connection to MQTT broker", default=False)
+parser.add_argument("--cacerts",       help="cacerts : CA path to verify the MQTT broker's TLS certificate", default=None)
 parser.add_argument("--mode",          help="mqtt : (live) get logs from json files / mqtt_db : like mqtt but with MQTT message recording / search : For searching message in historic",default="mqtt")
 parser.add_argument("--outputFormat",  help="human : return human text / raw : return payload as raw",default="human")
 parser.add_argument("--datetime_start",help="if search mode, the start date for search. ex: 2020-04-26 23:30:00",default="2020-03-26 23:30:00")
@@ -144,11 +146,19 @@ logger.info("TCP port : %s", str(port))
 username = str(args.username)
 logger.info("username : %s", username)
 
-## Set the username for authent
+## Set the password for authent
 password = str(args.password)
 
+## Set to True if the connection to MQTT uses TLS.
+tls = args.tls
+logger.info("TLS : %s", tls)
+
+## Set the CA path
+cacerts = args.cacerts
+logger.info("CA path : %s", cacerts)
+
 ## Create the custom MQTT object
-mqtt = RhasspyMQTTClient(host, port, username, password, False, jsonfolder, logger )
+mqtt = RhasspyMQTTClient(host, port, username, password, tls, cacerts, False, jsonfolder, logger )
 mqtt.on_connect = on_connect
 mqtt.on_message = on_message
 mqtt.on_saved_wav = on_saved_wav

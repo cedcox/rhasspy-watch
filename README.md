@@ -8,15 +8,14 @@ Text messages are saved in json format and audio streaming are saved in .wav for
 
 ## Installation
 To work, the script needs :
-* termcolor
 * colorlog
+* paho-mqtt
 * python-dateutil
+* termcolor
 
 Quick and dirty :
 ```
-pip3 install termcolor 
-pip3 install colorlog 
-pip3 install python-dateutil 
+pip3 install -r requirements.txt
 ```
 
 Get repository :
@@ -35,6 +34,8 @@ python3 ./rhasspy-watch.py
 * **--port**     : MQTT server tcp port" (default=1883)
 * **--username** : user for authentication,default=''
 * **--password** : password for authentication,default=''
+* **--tls**      : use TLS connection to MQTT broker,default=False
+* **--cacerts**  : CA path to verify the MQTT broker's TLS certificate,default=None
 * **--mode**     :
   * 'mqtt'    : Just live display (default)
   * 'mqtt_db' : Like 'mqtt' but MQTT messages are saved
@@ -81,4 +82,4 @@ Thanks to **Koen Vervloesem** - [*hermes-audio-server*](https://github.com/koenv
    
 ## License
 
-This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU License - see the [LICENSE](LICENSE) file for details
