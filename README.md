@@ -1,8 +1,8 @@
 # rhasspy-watch
 
-Tool for dynamic display of Rhasspy MQTT messages with recording and query functionalities.
+Rhasspy-watch is a tool for dynamic display of Rhasspy MQTT messages with recording and query functionalities.
 
-text messages are saved on json format. Audio streaming are saved in .wav format . so you can listen again to what was recorded by the microphone and sent to the ASR ! 
+Text messages are saved in json format and audio streaming are saved in .wav format. So you can listen again to what was recorded by the microphone and sent to the ASR ! 
 
 ![Alt Text](https://nsm09.casimages.com/img/2020/04/30//20043002134924155416769151.png)
 
