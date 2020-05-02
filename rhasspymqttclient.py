@@ -208,12 +208,6 @@ class RhasspyMQTTClient:
                 " was asked to listen on site {0}"\
                 .format (colored(payload['siteId'],'white',attrs=['bold']))
 
-        elif ("hermes/dialogueManager/sessionStarted" in topic):
-            text = colored("[Dialogue]",'yellow') \
-                + " session with id {0} was started on site {1}."\
-                .format(payload['sessionId'],
-                        colored(payload['siteId'],'white',attrs=['bold']))
-
         elif ("hermes/asr/textCaptured" in topic):
             text = colored("[Asr]",'yellow') + \
                 " captured text '{0}' in {1}s on site {2}"\
@@ -221,10 +215,26 @@ class RhasspyMQTTClient:
                         payload['seconds'],
                         colored(payload['siteId'],'white',attrs=['bold']))
 
+        elif "hermes/asr/toggleOn" in topic:
+            text = colored("[Asr]",'magenta') + \
+                " was asked to toggle itself 'on' on site {0}"\
+                .format (colored(payload['siteId'],'white',attrs=['bold']))
+
+        elif "hermes/asr/toggleOff" in topic:
+            text = colored("[Asr]",'magenta') + \
+                " was asked to toggle itself 'off' on site {0}"\
+                .format (colored(payload['siteId'],'white',attrs=['bold']))
+
 
         ########################
         #   DIALOGUE MANAGER   #
         ########################
+        elif ("hermes/dialogueManager/sessionStarted" in topic):
+            text = colored("[Dialogue]",'yellow') \
+                + " session with id {0} was started on site {1}."\
+                .format(payload['sessionId'],
+                        colored(payload['siteId'],'white',attrs=['bold']))
+
         elif ("hermes/dialogueManager/sessionEnded" in topic):
             text = colored("[Dialogue]",'yellow') + \
                 " session with id {0} was ended on site {1}. Reason: {2}"\

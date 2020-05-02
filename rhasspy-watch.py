@@ -99,7 +99,7 @@ logger.info(" ****************** Rhasspy-watch is started **********************
 #######################
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--host",          help="host : MQTT hostname or IP",default="snips-master")
+parser.add_argument("--host",          help="host : MQTT hostname or IP",default="rhasspy-master")
 parser.add_argument("--port",          help="port : MQTT server tcp port",default=1883)
 parser.add_argument("--username",      help="username : authentication on MQTT",default="")
 parser.add_argument("--password",      help="passwrd : authentication on MQTT",default="")
