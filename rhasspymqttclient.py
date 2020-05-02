@@ -426,10 +426,16 @@ class RhasspyMQTTClient:
             ## Use <IS_LAST_CHUNK> instead ?
             if (flux == "playBytes") or (flux == "streamFinished"):
                 self.logger.debug("fin streaming on site %s",siteId)
-                toto = len(self.__playBytes[siteId]) 
-                self.logger.debug("count of item in array %s",str(toto))
-                self.__saveWave(siteId,currentTime,self.__playBytes[siteId],'play')
-                self.__playBytes[siteId] = []
+                if (siteId not in self.__playBytes) or (len(self.__playBytes[siteId]) == 0) :
+                    self.__playBytes[siteId] = []
+                    (self.__playBytes[siteId]).append(bytearray(msg.payload))
+                    
+                count_item = len(self.__playBytes[siteId]) 
+                self.logger.debug("count of item in array %s",str(count_item))
+
+                if len (self.__playBytes[siteId]) > 0:
+                    self.__saveWave(siteId,currentTime,self.__playBytes[siteId],'play')
+                    self.__playBytes[siteId] = []
 
 
            
