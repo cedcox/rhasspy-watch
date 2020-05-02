@@ -81,7 +81,7 @@ def on_saved_wav (filename,siteId, flux, logTime):
 #######################
 
 ## Set log tool
-logger = get_logger('rhasspy-watch', verbose=True)   
+logger = get_logger('rhasspy-watch', verbose=False)   
 ## date log format
 TIMELOGFORMAT = '%Y-%m-%d %H:%M:%S'
 ## Get the current folder script
@@ -105,7 +105,7 @@ parser.add_argument("--username",      help="username : authentication on MQTT",
 parser.add_argument("--password",      help="passwrd : authentication on MQTT",default="")
 parser.add_argument("--tls",           help="tls : use TLS connection to MQTT broker", default=False)
 parser.add_argument("--cacerts",       help="cacerts : CA path to verify the MQTT broker's TLS certificate", default=None)
-parser.add_argument("--mode",          help="mqtt : (live) get logs from json files / mqtt_db : like mqtt but with MQTT message recording / search : For searching message in historic",default="mqtt_db")
+parser.add_argument("--mode",          help="mqtt : (live) get logs from json files / mqtt_db : like mqtt but with MQTT message recording / search : For searching message in historic",default="mqtt")
 parser.add_argument("--outputFormat",  help="human : return human text / raw : return payload as raw",default="human")
 parser.add_argument("--datetime_start",help="if search mode, the start date for search. ex: 2020-04-26 23:30:00",default="2020-03-26 23:30:00")
 parser.add_argument("--datetime_stop", help="if search mode, the stop date for search. ex: 2020-04-27 01:00:00",default="2020-06-27 01:00:00")
