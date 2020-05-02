@@ -102,7 +102,7 @@ class RhasspyMQTTClient:
 
         self.logger.debug("%s.wav saved successfully ",strFileTime)
 
-        self.on_saved_wav (strFileTime + ".wav", siteId, flux, logTime)
+        self.on_saved_wav (strFileTime + "_" + siteId + "_" + flux + ".wav", siteId, flux, logTime)
 
 
 
