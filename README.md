@@ -57,7 +57,7 @@ python3 ./rhasspy-watch.py --host rhasspy-master.local
 
 #### Display live messages in human readable text and record messages
 ```
-python3 ./rhasspy-watch.py --host rhasspy-master.local  --mqtt_db
+python3 ./rhasspy-watch.py --host rhasspy-master.local  --mode mqtt_db
 ```
 
 #### Display recorded messages in json format between 2 hours
@@ -69,6 +69,8 @@ python3 ./rhasspy-watch.py --mode search --datetime_start "2020-04-25 15h30" --d
 I did not test authentication for MQTT :) I added it just in case someone wants to try
 
 it's just a tool quickly developped to answer to a need, not a real soft
+
+French article about tool : https://www.coxprod.org/domotique/rhasspy-watch/
 
 ## Warning
 The choice to use files instead of database to save the messages was made for reasons of simplicity and speed of writing the script. 
