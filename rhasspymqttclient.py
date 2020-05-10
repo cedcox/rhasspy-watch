@@ -522,4 +522,3 @@ class RhasspyMQTTClient:
     def on_saved_wav (self,filename ,siteId, flux, logTime):
         """Event method """
   
-
