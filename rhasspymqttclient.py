@@ -86,24 +86,31 @@ class RhasspyMQTTClient:
         ## open the wave file with write access
         output = wave.open(wave_filename,'wb') 
         
-        ## set wave file parameters from first wave element in array
-        with io.BytesIO(arrBytesWav[0]) as wav_buffer:       
-            with wave.open(wav_buffer,'rb') as w:                    
-                output.setparams(w.getparams())
+        try:
+            ## set wave file parameters from first wave element in array
+            with io.BytesIO(arrBytesWav[0]) as wav_buffer:       
+                with wave.open(wav_buffer,'rb') as w:                    
+                    output.setparams(w.getparams())
 
-        ## Extract each frames from all wave elements in arrBytesWav
-        ## to add them to output wave file
-        for wav in arrBytesWav :
-            with io.BytesIO(wav) as wav_buffer:
-                with wave.open(wav_buffer,'rb') as w:
-                    output.writeframes(w.readframes(w.getnframes()))
-        
-        output.close()    
+            try:
+                ## Extract each frames from all wave elements in arrBytesWav
+                ## to add them to output wave file
+                for wav in arrBytesWav :
+                    with io.BytesIO(wav) as wav_buffer:
+                        with wave.open(wav_buffer,'rb') as w:
+                            output.writeframes(w.readframes(w.getnframes()))
+                
+                output.close()    
 
-        self.logger.debug("%s.wav saved successfully ",strFileTime)
+                self.logger.debug("%s.wav saved successfully ",strFileTime)
 
-        self.on_saved_wav (strFileTime + "_" + siteId + "_" + flux + ".wav", siteId, flux, logTime)
-
+                self.on_saved_wav (strFileTime + "_" + siteId + "_" + flux + ".wav", siteId, flux, logTime)
+            except:
+                self.logger.warning("ERROR : Failed to extract frames from array",strFileTime)
+                output.close()    
+        except:
+            self.logger.warning("ERROR : Failed to get wave param in first frames ",strFileTime)    
+            output.close()    
 
 
     def connect(self):
@@ -241,12 +248,26 @@ class RhasspyMQTTClient:
                 .format(payload['sessionId'],
                         colored(payload['siteId'],'white',attrs=['bold']),
                         payload['termination']['reason'])
+            if len(payload['customData']) > 0:
+                text = text + "\n           with customData : "
+                text = text + "\n               {0} "\
+                    .format(colored(payload['customData'],'cyan', attrs=['bold']))    
 
         elif ("hermes/dialogueManager/endSession" in topic):
             text = colored("[Dialogue]",'magenta') + \
                 " was ask to end session with id {0} by saying '{1}'"\
                 .format(payload['sessionId'],
                         (payload['text']))
+
+        elif ("hermes/dialogueManager/continueSession" in topic):
+            text = colored("[Dialogue]",'magenta') + \
+                " was ask to continue session with id {0} by saying '{1}'"\
+                .format(payload['sessionId'],
+                        (payload['text']))
+            if len(payload['customData']) > 0:
+                text = text + "\n           with customData : "
+                text = text + "\n               {0}"\
+                        .format(colored(payload['customData'],'cyan', attrs=['bold']))    
 
 
         ########################
@@ -287,6 +308,12 @@ class RhasspyMQTTClient:
                         .format(colored(slot['slotName'],'cyan', attrs=['bold']),
                                 slot['value']['value'],
                                 slot['confidenceScore'])    
+
+            if payload['customData'] is not None:
+                if len(payload['customData']) > 0:
+                    text = text + "\n           with customData : "
+                    text = text + "\n               {0} "\
+                        .format(colored(payload['customData'],'cyan', attrs=['bold']))    
 
 
         ########################
