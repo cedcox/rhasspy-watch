@@ -273,7 +273,7 @@ class RhasspyMQTTClient:
             text = colored("[Dialogue]",'red') + \
                 " Intent NOT recognized for session with id {0} by saying '{1}'"\
                 .format(payload['sessionId'],
-                        (payload['text']))
+                        (payload['input']))
             if len(payload['customData']) > 0:
                 text = text + "\n           with customData : "
                 text = text + "\n               {0}"\
@@ -295,7 +295,7 @@ class RhasspyMQTTClient:
 
         elif ("hermes/nlu/intentParsed" in topic):
             text = colored("[Nlu]",'yellow') + \
-                " Detected intent {0} with confidence score {1} for input '{2}"\
+                " Detected intent {0} with confidence score {1} for input '{2}'"\
                 .format(colored(payload["intent"]["intentName"],'green', attrs=['bold']),
                         payload["intent"]["confidenceScore"],
                         payload['input'])
