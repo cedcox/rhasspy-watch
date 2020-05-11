@@ -248,10 +248,11 @@ class RhasspyMQTTClient:
                 .format(payload['sessionId'],
                         colored(payload['siteId'],'white',attrs=['bold']),
                         payload['termination']['reason'])
-            if len(payload['customData']) > 0:
-                text = text + "\n           with customData : "
-                text = text + "\n               {0} "\
-                    .format(colored(payload['customData'],'cyan', attrs=['bold']))    
+            if 'customData' in payload.keys():
+                if payload['customData'] is not None:
+                    text = text + "\n           with customData : "
+                    text = text + "\n               {0} "\
+                        .format(colored(payload['customData'],'cyan', attrs=['bold']))    
 
         elif ("hermes/dialogueManager/endSession" in topic):
             text = colored("[Dialogue]",'magenta') + \
@@ -264,20 +265,22 @@ class RhasspyMQTTClient:
                 " was ask to continue session with id {0} by saying '{1}'"\
                 .format(payload['sessionId'],
                         (payload['text']))
-            if len(payload['customData']) > 0:
-                text = text + "\n           with customData : "
-                text = text + "\n               {0}"\
-                        .format(colored(payload['customData'],'cyan', attrs=['bold']))    
+            if 'customData' in payload.keys():
+                if payload['customData'] is not None:
+                    text = text + "\n           with customData : "
+                    text = text + "\n               {0}"\
+                            .format(colored(payload['customData'],'cyan', attrs=['bold']))    
 
         elif ("hermes/dialogueManager/intentNotRecognized" in topic):
             text = colored("[Dialogue]",'red') + \
                 " Intent NOT recognized for session with id {0} by saying '{1}'"\
                 .format(payload['sessionId'],
                         (payload['input']))
-            if len(payload['customData']) > 0:
-                text = text + "\n           with customData : "
-                text = text + "\n               {0}"\
-                        .format(colored(payload['customData'],'cyan', attrs=['bold']))    
+            if 'customData' in payload.keys():
+                if payload['customData'] is not None:
+                        text = text + "\n           with customData : "
+                        text = text + "\n               {0}"\
+                                .format(colored(payload['customData'],'cyan', attrs=['bold']))    
 
 
         ########################
@@ -305,22 +308,36 @@ class RhasspyMQTTClient:
         #       INTENT         #
         ########################
         elif ("hermes/intent/" in topic):
+
             text = colored("[Nlu]",'yellow') + \
                 " Intent {0} with confidence score {1} on site {2} "\
                 .format(colored(payload["intent"]["intentName"],'green', attrs=['bold']),
                         payload["intent"]["confidenceScore"],
                         colored(payload['siteId'],'white',attrs=['bold']))
-                    
+
+            """
+            In snips, in slot, the word is "confidenceScore"
+            In rhasspy, in slot, the word is "confidence"
+
+            """        
             if len(payload['slots']) > 0:
+
                 text = text + "\n           with slots : "
                 for slot in payload['slots']:
+
+                    confidence = "N/A"
+                    if "confidenceScore" in slot.keys():
+                        confidence = slot['confidenceScore']
+                    else:
+                        confidence = slot['confidence']
+
                     text = text + "\n               {0} => {1} (confidenceScore={2})"\
                         .format(colored(slot['slotName'],'cyan', attrs=['bold']),
                                 slot['value']['value'],
-                                slot['confidenceScore'])    
+                                confidence)    
 
-            if payload['customData'] is not None:
-                if len(payload['customData']) > 0:
+            if 'customData' in payload.keys():
+                if payload['customData'] is not None:
                     text = text + "\n           with customData : "
                     text = text + "\n               {0} "\
                         .format(colored(payload['customData'],'cyan', attrs=['bold']))    
