@@ -30,24 +30,24 @@ python3 ./rhasspy-watch.py
 ```
 
 ## Parameters
-* **--host**     : MQTT hostname or IP" (default="rhasspy-master")
-* **--port**     : MQTT server tcp port" (default=1883)
-* **--username** : user for authentication,default=''
-* **--password** : password for authentication,default=''
-* **--tls**      : use TLS connection to MQTT broker,default=False
-* **--cacerts**  : CA path to verify the MQTT broker's TLS certificate,default=None
-* **--mode**     :
+* **--host**     : MQTT hostname or IP" (default="rhasspy-master") (EnvVar: RW_HOST)
+* **--port**     : MQTT server tcp port" (default=1883) (EnvVar: RW_PORT)
+* **--username** : user for authentication,default='' (EnvVar: RW_USERNAME)
+* **--password** : password for authentication,default='' (EnvVar: RW_PASSWORD)
+* **--tls**      : use TLS connection to MQTT broker,default=False (EnvVar: RW_TLS)
+* **--cacerts**  : CA path to verify the MQTT broker's TLS certificate,default=None (EnvVar: RW_CACERTS)
+* **--mode**     : (EnvVar: RW_MODE)
   * 'mqtt'    : Just live display (default)
   * 'mqtt_db' : Like 'mqtt' but MQTT messages are saved
   * 'search'  : Use to get saved messages between 2 datetimes
-* **--outpoutFormat** : 
+* **--outpoutFormat** : (EnvVar: RW_OUTFORMAT)
   * 'human' : Display messages in human readable text (default)
   * 'raw'   : Display messages in json format
-* **--datetime_start** : the start date for search. ex: 2020-04-26 23:30:00
-* **--datetime_stop**  : the stop date for search. ex: 2020-04-26 23:30:00
-* **--outputFile**     : Save the live display in log file. If empty or not specified, no file is generated
-* **--jsonfolder**     : folder where payloads are saved as json file. (default 'archives' in script folder)
-* **--noStandardOutput** : Messages are not displayed on stdout
+* **--datetime_start** : the start date for search. ex: 2020-04-26 23:30:00 (EnvVar: RW_DATESTART)
+* **--datetime_stop**  : the stop date for search. ex: 2020-04-26 23:30:00 (EnvVar: RW_DATESTOP)
+* **--outputFile**     : Save the live display in log file. If empty or not specified, no file is generated (EnvVar: RW_OUTFILE)
+* **--jsonfolder**     : folder where payloads are saved as json file. (default 'archives' in script folder) (EnvVar: RW_JSONFOLDER)
+* **--noStandardOutput** : Messages are not displayed on stdout (EnvVar: RW_NOSTDOUT)
 
 ## Examples
 #### Just display live messages in human readable text
@@ -63,6 +63,19 @@ python3 ./rhasspy-watch.py --host rhasspy-master.local  --mode mqtt_db
 #### Display recorded messages in json format between 2 hours
 ```
 python3 ./rhasspy-watch.py --mode search --datetime_start "2020-04-25 15h30" --datetime_stop "2020-04-25 17h30" --outputFormat "raw"
+```
+
+## Docker
+#### Build
+```
+git clone https://github.com/cedcox/rhasspy-watch
+cd rhasspy-watch
+docker build --tag rhasspy-watch .
+```
+
+#### Run with host, user and password
+```
+docker run -e RW_HOST=192.168.99.1 -e RW_USERNAME=mqtt -e RW_PASSWORD=mqtt  rhasspy-watch
 ```
 
 ## Infos
